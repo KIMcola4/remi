@@ -3,20 +3,2379 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Creative Agent</title>
+  <title>AI Creative Agent Team</title>
+  <meta name="description" content="한 줄의 아이디어로 발표자료, 포스터, 제안서, 웹페이지, 예산 분석까지 한 번에 만드는 AI Creative Agent Team.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+  <style>
+    :root {
+      --bg: #F7F7FB;
+      --text: #14142B;
+      --muted: #6B6B80;
+      --line: rgba(20, 20, 43, 0.08);
+      --glass: rgba(255, 255, 255, 0.55);
+      --glass-strong: rgba(255, 255, 255, 0.72);
+      --brand-gradient: linear-gradient(120deg, #6E8BFF, #A77BFF 40%, #FF8AC8 70%, #FFB37A);
+      --brand-gradient-dark: linear-gradient(120deg, #4F6BFF, #8B5CF6 40%, #EC4899 70%, #FF7A45);
+      --shadow-soft: 0 30px 80px -30px rgba(76, 70, 160, 0.25);
+      --shadow-card: 0 16px 36px -24px rgba(76, 70, 160, 0.24);
+      --radius: 36px;
+      --row: min(1080px, calc(100% - 24px));
+      --spring: cubic-bezier(.2, 1.3, .3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      word-break: keep-all;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='2' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0.06'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+      opacity: 0.04;
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      padding: 0 12px;
+    }
+
+    .nav-pill {
+      width: var(--row);
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      box-shadow: 0 15px 36px -24px rgba(76, 70, 160, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--brand-gradient);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      filter: blur(4px);
+    }
+
+    .brand-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      font-size: 0.82rem;
+      color: rgba(20, 20, 43, 0.76);
+      white-space: nowrap;
+      flex: 1 1 auto;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 8px 0;
+      color: rgba(20, 20, 43, 0.7);
+      transition: color .2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 1.5px;
+      opacity: 0;
+      background: var(--brand-gradient);
+      transition: opacity .2s ease;
+    }
+
+    .nav-links a:hover::after {
+      opacity: 1;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border: 0;
+      background: #14142B;
+      color: #fff;
+      border-radius: 999px;
+      height: 42px;
+      padding: 0 18px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      box-shadow: 0 14px 30px -18px rgba(20,20,43,0.6);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 38px -20px rgba(20,20,43,0.5);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-wrap {
+      padding: 100px 0 12px;
+    }
+
+    .hero-panel {
+      width: min(1240px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 26px 26px 18px;
+      border-radius: 36px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(255,255,255,0.62), rgba(255,255,255,0.18));
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 50px 90px -55px rgba(76,70,160,.24);
+      isolation: isolate;
+    }
+
+    .mesh {
+      background:
+        radial-gradient(circle at 16% 18%, #8EA2FF 0 14%, transparent 32%),
+        radial-gradient(circle at 78% 9%, #FFB3D9 0 13%, transparent 30%),
+        radial-gradient(circle at 66% 62%, #FFD3A8 0 16%, transparent 34%),
+        radial-gradient(circle at 25% 74%, #9BE3FF 0 15%, transparent 32%),
+        radial-gradient(circle at 50% 32%, #C4A5FF 0 16%, transparent 36%),
+        linear-gradient(135deg, #fff, #F5F0FF 40%, #FFF7F0);
+    }
+
+    .hero-panel::before,
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 50%;
+      filter: blur(18px);
+      opacity: 0.75;
+    }
+
+    .hero-panel::before {
+      width: 540px;
+      height: 540px;
+      left: -160px;
+      top: -140px;
+      background: rgba(167, 123, 255, 0.16);
+    }
+
+    .hero-panel::after {
+      width: 480px;
+      height: 480px;
+      right: -140px;
+      bottom: -160px;
+      background: rgba(255, 166, 113, 0.18);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 12px 12px 4px;
+      min-height: 0;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.62);
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: rgba(20,20,43,0.75);
+      box-shadow: 0 18px 42px -30px rgba(76,70,160,0.25);
+    }
+
+    .hero-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #7A93FF;
+      box-shadow: 0 0 0 5px rgba(122,147,255,0.12);
+    }
+
+    .hero-badge em {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.1rem;
+      color: rgba(20,20,43,0.9);
+    }
+
+    .hero-title {
+      margin: 18px 0 10px;
+      max-width: 900px;
+      font-size: clamp(40px, 6vw, 88px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      font-weight: 800;
+      text-wrap: balance;
+      color: #14142B;
+    }
+
+    .hero-title .gradient-text {
+      background: var(--brand-gradient-dark);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: clamp(15px, 1.8vw, 22px);
+      line-height: 1.52;
+      color: rgba(20,20,43,0.72);
+      letter-spacing: -0.02em;
+    }
+
+    .chat-shell {
+      width: min(860px, 100%);
+      margin: 18px auto 0;
+      padding: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .chat-card {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-width: 0;
+      border-radius: 32px;
+      background: rgba(255,255,255,0.32);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      box-shadow: 0 30px 70px -40px rgba(76,70,160,.28), inset 0 1px 1px rgba(255,255,255,0.7);
+      overflow: hidden;
+      transition: height .4s var(--spring);
+    }
+
+    .chat-card > * {
+      flex: none;
+    }
+
+    .chat-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 54px;
+      padding: 0 16px;
+      background: rgba(255,255,255,0.22);
+      border-bottom: 1px solid rgba(20,20,43,0.04);
+      position: relative;
+      z-index: 2;
+    }
+
+    .traffic-lights {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: none;
+    }
+
+    .traffic-lights span {
+      display: block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(20,20,43,0.2);
+    }
+
+    .traffic-lights span:nth-child(1) { background: rgba(20,20,43,0.28); }
+    .traffic-lights span:nth-child(2) { background: rgba(20,20,43,0.18); }
+    .traffic-lights span:nth-child(3) { background: rgba(20,20,43,0.1); }
+
+    .chat-header-name {
+      min-width: 0;
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: rgba(20,20,43,0.72);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-header-name strong {
+      font-size: 0.72rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .header-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(20,20,43,0.35);
+      flex: none;
+      box-shadow: 0 0 0 7px rgba(20,20,43,0.02);
+      transition: background .2s ease, box-shadow .2s ease;
+    }
+
+    body.is-connected .header-status {
+      background: #29BF6B;
+      box-shadow: 0 0 0 7px rgba(41,191,107,0.12);
+    }
+
+    .new-chat-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      min-height: 30px;
+      border-radius: 999px;
+      border: 1px solid rgba(20,20,43,0.08);
+      background: rgba(255,255,255,0.26);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: rgba(20,20,43,0.72);
+      cursor: pointer;
+      flex: none;
+      transition: transform .2s ease;
+    }
+
+    .new-chat-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .chat-card > #webchat {
+      height: 200px;
+      min-height: 0;
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.18);
+    }
+
+    body.is-started .chat-card {
+      height: calc(100svh - 112px);
+    }
+
+    body.is-started .chat-card > #webchat {
+      flex: 1 1 0;
+      height: auto;
+      min-height: 0;
+    }
+
+    .chat-foot {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px 12px 14px;
+      border-top: 1px solid rgba(20,20,43,0.04);
+      background: rgba(255,255,255,0.14);
+      position: relative;
+      z-index: 2;
+    }
+
+    .suggestion-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 2px;
+    }
+
+    .suggestion-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .suggestion-chip {
+      flex: none;
+      border: 1px solid rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.36);
+      color: rgba(20,20,43,0.7);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .suggestion-chip:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.5);
+    }
+
+    body.is-started .suggestion-row {
+      display: none;
+    }
+
+    .working-pill {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      max-width: 100%;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.42);
+      border: 1px solid rgba(255,255,255,0.66);
+      color: rgba(20,20,43,0.72);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    body.is-working .working-pill {
+      display: flex;
+    }
+
+    .dots {
+      position: relative;
+      width: 24px;
+      height: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      vertical-align: middle;
+    }
+
+    .dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(109, 112, 255, 0.7);
+      animation: pulse-fade 1.2s infinite ease-in-out;
+    }
+
+    .dots span:nth-child(2) { animation-delay: .15s; }
+    .dots span:nth-child(3) { animation-delay: .3s; }
+    .dots span:nth-child(4) { animation-delay: .45s; }
+    .dots span:nth-child(5) { animation-delay: .6s; }
+
+    @keyframes pulse-fade {
+      0%, 80%, 100% {
+        opacity: 0.25;
+        transform: scale(0.8);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .composer {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 10px 12px 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.36);
+      border: 1px solid rgba(20,20,43,0.06);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.8), 0 8px 24px -18px rgba(76,70,160,0.26);
+      transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+    }
+
+    .composer:focus-within {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 42px -28px rgba(76,70,160,0.26), inset 0 1px 1px rgba(255,255,255,0.8);
+      border-color: rgba(160, 168, 255, 0.44);
+    }
+
+    .composer::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      padding: 1.5px;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .6s;
+      background: conic-gradient(from var(--aurora), #a5b4fc, #f0abfc, #fda4af, #fcd34d, #86efac, #67e8f9, #a5b4fc);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: aurora 6s linear infinite;
+    }
+
+    body.is-working .composer::before {
+      opacity: 0.8;
+    }
+
+    @property --aurora {
+      syntax: "<angle>";
+      inherits: false;
+      initial-value: 0deg;
+    }
+
+    @keyframes aurora {
+      to {
+        --aurora: 360deg;
+      }
+    }
+
+    .composer textarea {
+      flex: 1 1 auto;
+      min-height: 46px;
+      max-height: 124px;
+      border: 0;
+      outline: none;
+      resize: none;
+      background: transparent;
+      color: rgba(20,20,43,0.82);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      padding: 12px 0 10px;
+      margin: 0;
+      overflow: hidden;
+      border-radius: 14px;
+      font-family: "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .composer textarea::placeholder {
+      color: rgba(20,20,43,0.42);
+    }
+
+    .composer textarea:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .send-button {
+      width: 42px;
+      height: 42px;
+      align-self: center;
+      border: 0;
+      border-radius: 50%;
+      background: #14142B;
+      color: #fff;
+      font-size: 1.3rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform .2s ease, opacity .2s ease;
+      flex: none;
+      box-shadow: 0 10px 22px -14px rgba(20,20,43,0.6);
+    }
+
+    .send-button[disabled] {
+      cursor: not-allowed;
+      opacity: 0.42;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .chat-note {
+      font-size: 0.68rem;
+      color: rgba(20,20,43,0.5);
+      text-align: center;
+      letter-spacing: -0.01em;
+    }
+
+    .chat-error {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+      padding: 18px 16px 22px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(20,20,43,0.7);
+    }
+
+    body.is-error .composer {
+      display: none;
+    }
+
+    body.is-error .chat-error {
+      display: flex;
+    }
+
+    .chat-error .title {
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .chat-error .message {
+      font-size: 0.68rem;
+      color: rgba(20,20,43,0.56);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .retry-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 16px;
+      border: 1px solid rgba(20,20,43,0.08);
+      background: rgba(255,255,255,0.34);
+      border-radius: 999px;
+      color: rgba(20,20,43,0.7);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .feature-section,
+    .how-section,
+    .design-section,
+    .prompt-section,
+    .cta-wrap {
+      width: min(1240px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .spacer {
+      height: 28px;
+    }
+
+    .stats-strip {
+      width: min(1080px, calc(100% - 32px));
+      margin: 34px auto 0;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      padding: 0 0 8px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 72px;
+      padding: 12px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.48);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      box-shadow: var(--shadow-card);
+      font-weight: 700;
+      color: rgba(20,20,43,0.72);
+    }
+
+    .stat-item .num {
+      font-size: clamp(1.5rem, 2.6vw, 2.5rem);
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      min-width: 52px;
+    }
+
+    .stat-item .label {
+      font-size: 0.76rem;
+      color: rgba(20,20,43,0.62);
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(30px);
+      filter: blur(10px);
+      transition: opacity .7s ease, transform .7s ease, filter .7s ease;
+      transition-delay: var(--delay, 0ms);
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .section-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: clamp(1.6rem, 2vw, 2.5rem);
+      font-style: italic;
+      color: rgba(20,20,43,0.78);
+      margin: 0;
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(32px, 4.2vw, 56px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      text-wrap: balance;
+      color: var(--text);
+    }
+
+    .feature-section {
+      padding: 72px 0 24px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .feature-card {
+      position: relative;
+      min-height: 264px;
+      padding: 18px 18px 16px;
+      border-radius: 28px;
+      background: rgba(255,255,255,0.46);
+      border: 1px solid rgba(255,255,255,0.72);
+      box-shadow: 0 18px 42px -28px rgba(76,70,160,0.26);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 52px -32px rgba(76,70,160,0.28);
+    }
+
+    .feature-card:nth-child(1) { grid-column: span 3; }
+    .feature-card:nth-child(2) { grid-column: span 3; }
+    .feature-card:nth-child(3) { grid-column: span 2; }
+    .feature-card:nth-child(4) { grid-column: span 2; }
+    .feature-card:nth-child(5) { grid-column: span 2; }
+
+    .feature-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .feature-kicker {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(20,20,43,0.56);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .feature-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: rgba(20,20,43,0.72);
+      border-radius: 999px;
+      background: rgba(20,20,43,0.04);
+      border: 1px solid rgba(20,20,43,0.05);
+      padding: 6px 9px;
+      white-space: nowrap;
+    }
+
+    .feature-visual {
+      position: relative;
+      height: 100px;
+      margin-bottom: 16px;
+      border-radius: 20px;
+      background: rgba(244,244,250,0.64);
+      border: 1px solid rgba(20,20,43,0.04);
+      overflow: hidden;
+      transform-origin: center;
+      transition: transform .35s ease;
+    }
+
+    .feature-card:hover .feature-visual {
+      transform: rotate(-2deg) translateY(-3px);
+    }
+
+    .mock-slides {
+      position: absolute;
+      inset: 18px 18px 16px;
+    }
+
+    .mock-slide {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98), rgba(245,245,255,0.96));
+      border: 1px solid rgba(20,20,43,0.05);
+      box-shadow: 0 10px 18px -12px rgba(76,70,160,.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 14px 14px 0;
+      transform-origin: center bottom;
+    }
+
+    .mock-slide:nth-child(1) { transform: rotate(-8deg) translate(-8px, 8px); }
+    .mock-slide:nth-child(2) { transform: rotate(-3deg) translate(0, 2px); }
+    .mock-slide:nth-child(3) { transform: rotate(6deg) translate(10px, -4px); }
+
+    .slide-lines {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .slide-lines span {
+      display: block;
+      height: 6px;
+      width: 100%;
+      border-radius: 999px;
+      background: rgba(20,20,43,0.08);
+    }
+
+    .slide-lines span:nth-child(2) { width: 65%; }
+    .slide-lines span:nth-child(3) { width: 82%; }
+    .slide-lines span:nth-child(4) { width: 52%; }
+
+    .mock-poster {
+      position: absolute;
+      inset: 12px 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(76,50,210,0.94), rgba(255,106,166,0.84));
+      box-shadow: 0 18px 24px -18px rgba(76,70,160,.25);
+      padding: 14px 16px;
+      color: white;
+    }
+
+    .mock-poster .poster-tag {
+      display: inline-block;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      font-size: 0.56rem;
+      opacity: 0.82;
+    }
+
+    .mock-poster .poster-title {
+      margin-top: 42px;
+      font-size: 1.3rem;
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+    }
+
+    .mock-proposal {
+      position: absolute;
+      inset: 14px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(20,20,43,0.05);
+      overflow: hidden;
+    }
+
+    .mock-proposal .topbar-fill {
+      height: 46px;
+      background: linear-gradient(90deg, rgba(94,86,219,0.95), rgba(233,122,177,0.95));
+    }
+
+    .mock-proposal .content {
+      padding: 14px 14px 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mock-proposal .content span {
+      display: block;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(20,20,43,0.12);
+    }
+
+    .mock-proposal .content span:nth-child(1) { width: 62%; }
+    .mock-proposal .content span:nth-child(2) { width: 82%; }
+    .mock-proposal .content span:nth-child(3) { width: 48%; }
+
+    .mock-webpage {
+      position: absolute;
+      inset: 14px 16px 12px;
+      background: rgba(255,255,255,0.96);
+      border-radius: 18px;
+      border: 1px solid rgba(20,20,43,0.05);
+      overflow: hidden;
+    }
+
+    .mock-webpage .browser-bar {
+      height: 26px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      background: rgba(20,20,43,0.03);
+      border-bottom: 1px solid rgba(20,20,43,0.04);
+    }
+
+    .mock-webpage .browser-bar span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(20,20,43,0.18);
+      display: block;
+    }
+
+    .mock-webpage .browser-body {
+      padding: 16px 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .mock-webpage .browser-body .hero-block {
+      height: 28px;
+      width: 80%;
+      border-radius: 999px;
+      background: linear-gradient(120deg, #7A7EF6, #FF8AC8);
+    }
+
+    .mock-webpage .browser-body .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .mock-webpage .browser-body .row span {
+      height: 18px;
+      border-radius: 999px;
+      background: rgba(20,20,43,0.08);
+    }
+
+    .mock-webpage .browser-body .card {
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(111,129,247,0.18), rgba(255,255,255,0.18));
+      border: 1px solid rgba(20,20,43,0.03);
+    }
+
+    .mock-budget {
+      position: absolute;
+      inset: 12px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid rgba(20,20,43,0.04);
+      padding: 12px 14px;
+    }
+
+    .mock-budget .amount {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: #17172C;
+    }
+
+    .mock-budget .bar-group {
+      display: grid;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .mock-budget .bar {
+      position: relative;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(20,20,43,0.06);
+      overflow: hidden;
+    }
+
+    .mock-budget .bar::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 58%;
+      border-radius: inherit;
+      background: linear-gradient(120deg, #8EA2FF, #FF8AC8);
+    }
+
+    .feature-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .feature-title {
+      margin: 0;
+      font-size: 1.18rem;
+      line-height: 1.2;
+      letter-spacing: -0.03em;
+    }
+
+    .feature-text {
+      margin: 0;
+      font-size: 0.78rem;
+      line-height: 1.55;
+      color: rgba(20,20,43,0.64);
+    }
+
+    .feature-file {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(20,20,43,0.04);
+      border: 1px solid rgba(20,20,43,0.06);
+      font-weight: 700;
+      font-size: 0.68rem;
+      color: rgba(20,20,43,0.72);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .how-section {
+      padding-top: 70px;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .orbit-panel,
+    .steps-panel {
+      border-radius: 32px;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.42);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      box-shadow: var(--shadow-card);
+      min-height: 420px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .orbit-panel {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 32%, rgba(196,165,255,0.12), transparent 30%),
+        linear-gradient(160deg, rgba(255,255,255,0.52), rgba(242,245,255,0.55));
+    }
+
+    .orbit {
+      --r: 150px;
+      position: relative;
+      width: calc(var(--r) * 2);
+      aspect-ratio: 1;
+      margin: 48px auto;
+    }
+
+    .orbit-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px dashed rgba(20,20,43,.16);
+      animation: orbit-spin 40s linear infinite;
+    }
+
+    .orbit .agent {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: rotate(var(--a)) translateX(var(--r)) rotate(calc(-1 * var(--a)));
+    }
+
+    .orbit .agent b {
+      position: absolute;
+      translate: -50% -50%;
+      white-space: nowrap;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: #5B4BC4;
+      background: rgba(255,255,255,.8);
+      border: 1px solid #fff;
+      animation: orbit-spin 40s linear infinite reverse;
+    }
+
+    .orbit .leader {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      translate: -50% -50%;
+      width: 112px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(98,115,255,0.16), rgba(255,155,220,0.16));
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.85);
+    }
+
+    @keyframes orbit-spin {
+      to {
+        rotate: 360deg;
+      }
+    }
+
+    .steps-panel {
+      padding: 22px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .step-item {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 10px 8px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(20,20,43,0.04);
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(120deg, rgba(110,139,255,0.18), rgba(255,138,200,0.18));
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: -0.03em;
+      border: 1px solid rgba(160, 168, 255, 0.18);
+      color: #4f52d3;
+    }
+
+    .step-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .step-copy strong {
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .step-copy span {
+      color: rgba(20,20,43,0.64);
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+
+    .design-section {
+      padding-top: 86px;
+    }
+
+    .design-band {
+      margin-top: 28px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(120deg, #5B3DF5, #FF4FA3 52%, #FF9F45);
+      padding: 34px 18px 18px;
+      color: #fff;
+      box-shadow: 0 30px 72px -34px rgba(93, 61, 245, 0.42);
+    }
+
+    .design-inner {
+      width: min(1040px, calc(100% - 12px));
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .design-band .eyebrow {
+      color: rgba(255,255,255,0.82);
+      font-size: clamp(1.6rem, 2vw, 2.2rem);
+    }
+
+    .design-band .section-title {
+      color: white;
+      font-size: clamp(32px, 4.2vw, 56px);
+    }
+
+    .design-band .sub {
+      max-width: 640px;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      margin: 0;
+    }
+
+    .palette-grid {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+      width: min(1040px, calc(100% - 12px));
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .palette-card {
+      min-height: 150px;
+      padding: 18px 16px 14px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+      color: white;
+      text-align: left;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.14);
+    }
+
+    .swatches {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.72);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+    }
+
+    .palette-name {
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.04rem;
+    }
+
+    .palette-use {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      letter-spacing: -0.02em;
+    }
+
+    .prompt-section {
+      padding-top: 72px;
+    }
+
+    .marquee-wrap {
+      margin-top: 26px;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.72);
+      background: rgba(255,255,255,0.38);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      box-shadow: var(--shadow-card);
+    }
+
+    .marquee {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+      animation: scroll-left 28s linear infinite;
+      padding: 12px 0;
+    }
+
+    .marquee.reversed {
+      animation-direction: reverse;
+      animation-duration: 26s;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      height: 42px;
+      padding: 0 18px;
+      margin: 0 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.46);
+      border: 1px solid rgba(20,20,43,0.04);
+      color: rgba(20,20,43,0.7);
+      font-weight: 700;
+      font-size: 0.84rem;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: transform .2s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-1px);
+    }
+
+    @keyframes scroll-left {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .cta-wrap {
+      padding-top: 72px;
+      padding-bottom: 62px;
+    }
+
+    .cta-panel {
+      position: relative;
+      overflow: hidden;
+      width: min(1240px, calc(100% - 24px));
+      margin: 0 auto;
+      border-radius: 40px;
+      padding: 52px 28px 42px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(245,240,255,0.52));
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 50px 94px -60px rgba(76,70,160,0.24);
+    }
+
+    .cta-panel .mesh {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-panel .eyebrow {
+      font-size: clamp(1.8rem, 2vw, 2.5rem);
+    }
+
+    .cta-title {
+      margin: 0;
+      font-size: clamp(44px, 6vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      text-wrap: balance;
+      max-width: 800px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .cta-button {
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 28px;
+      border-radius: 999px;
+      background: #14142B;
+      color: white;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      cursor: pointer;
+      box-shadow: 0 24px 42px -24px rgba(20,20,43,0.62);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 28px 52px -24px rgba(20,20,43,0.56);
+    }
+
+    footer {
+      width: min(1240px, calc(100% - 24px));
+      margin: 0 auto 48px;
+      padding-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: rgba(20,20,43,0.64);
+      font-size: 0.82rem;
+      letter-spacing: -0.02em;
+      text-align: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-mark {
+      font-weight: 800;
+      color: rgba(20,20,43,0.82);
+    }
+
+    .floating-pill {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.38);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      box-shadow: 0 14px 34px -18px rgba(76,70,160,0.34), inset 0 1px 1px rgba(255,255,255,0.8);
+      color: rgba(20,20,43,0.7);
+      font-weight: 700;
+      font-size: 0.74rem;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .floating-pill:hover {
+      transform: translateY(-1px);
+    }
+
+    .floating-pill .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(20,20,43,0.28);
+      box-shadow: 0 0 0 7px rgba(20,20,43,0.03);
+      flex: none;
+    }
+
+    body.is-working .floating-pill .status-dot {
+      background: #6D7EF9;
+      box-shadow: 0 0 0 7px rgba(109,126,249,0.08);
+    }
+
+    .floating-pill.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .feature-card:nth-child(1),
+      .feature-card:nth-child(2),
+      .feature-card:nth-child(3),
+      .feature-card:nth-child(4),
+      .feature-card:nth-child(5) {
+        grid-column: span 1;
+      }
+
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-pill {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .brand-name {
+        font-size: 0.8rem;
+      }
+
+      .nav-cta {
+        padding: 0 14px;
+        height: 38px;
+        font-size: 0.72rem;
+      }
+
+      .hero-wrap {
+        padding-top: 82px;
+      }
+
+      .hero-panel {
+        padding: 18px 18px 10px;
+      }
+
+      .hero-title {
+        max-width: 660px;
+      }
+
+      .chat-shell {
+        width: min(100%, 460px);
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .feature-section,
+      .how-section,
+      .design-section,
+      .prompt-section,
+      .cta-wrap {
+        width: min(100%, 720px);
+      }
+
+      .palette-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .marquee-wrap {
+        overflow: hidden;
+      }
+
+      .credit,
+      .footer-mark {
+        display: block;
+      }
+
+      .floating-pill {
+        right: 12px;
+        left: 12px;
+        bottom: 12px;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .nav-pill {
+        gap: 8px;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .brand-name {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .nav-cta {
+        min-width: 0;
+      }
+
+      .chat-card {
+        border-radius: 24px;
+      }
+
+      .chat-bar {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .chat-header-name {
+        font-size: 0.55rem;
+      }
+
+      .composer {
+        border-radius: 24px;
+      }
+
+      .stats-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .stat-item .label {
+        font-size: 0.68rem;
+      }
+
+      .cta-panel {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .orbit {
+        --r: 100px;
+      }
+
+      .orbit .agent b {
+        font-size: 10px;
+        padding: 6px 9px;
+      }
+
+      .orbit .leader {
+        width: 84px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
-  <p id="status" role="status" aria-live="polite">채팅에 연결하는 중입니다...</p>
-  <div id="webchat" style="height: 600px"></div>
-  <script src="https://cdn.botframework.com/botframework-webchat/4.18.0/webchat.js"></script>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="nav-pill">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">AI Creative Agent Team</span>
+        </div>
+
+        <nav class="nav-links" aria-label="메인 네비게이션">
+          <a href="#features">기능</a>
+          <a href="#how">작동 방식</a>
+          <a href="#design">디자인</a>
+        </nav>
+
+        <button class="nav-cta" type="button" data-scroll-chat>지금 써 보기</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-wrap">
+        <div class="hero-panel mesh">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Copilot Studio 멀티 에이전트</span>
+              <em>One idea, five deliverables.</em>
+            </div>
+
+            <h1 class="hero-title">
+              한 줄의 아이디어, <span class="gradient-text">다섯 개의 결과물</span>
+            </h1>
+
+            <p class="hero-sub">
+              팀장 에이전트가 전문가 다섯에게 일을 나눠, 발표자료부터 예산 분석까지 한 번에 만들어 드려요.
+            </p>
+
+            <div class="chat-shell">
+              <section class="chat-card" aria-label="AI Creative Agent Team 채팅">
+                <div class="chat-bar">
+                  <div class="traffic-lights" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+
+                  <div class="chat-header-name">
+                    <strong>AI Creative Agent Team</strong>
+                    <span class="header-status" aria-label="연결 상태"></span>
+                  </div>
+
+                  <button class="new-chat-btn" type="button" data-reset-chat>새 대화</button>
+                </div>
+
+                <div id="webchat" aria-live="polite"></div>
+
+                <div class="chat-foot">
+                  <div class="suggestion-row" aria-label="예시 채팅 제안">
+                    <button class="suggestion-chip" type="button" data-prompt="가을 학교 축제 기획해 줘">가을 학교 축제 기획해 줘</button>
+                    <button class="suggestion-chip" type="button" data-prompt="탄소중립 캠페인 홍보물 만들어 줘">탄소중립 캠페인 홍보물 만들어 줘</button>
+                    <button class="suggestion-chip" type="button" data-prompt="교사 AI 연수 프로그램 제안해 줘">교사 AI 연수 프로그램 제안해 줘</button>
+                  </div>
+
+                  <div class="working-pill" aria-live="polite">
+                    <span class="dots" aria-hidden="true">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </span>
+                    <span class="working-text">팀이 작업 중 · 0:42</span>
+                  </div>
+
+                  <div class="composer" role="textbox" aria-label="메시지 입력">
+                    <textarea id="chat-input" rows="1" placeholder="무엇을 만들어 볼까요?" aria-label="메시지 입력"></textarea>
+                    <button class="send-button" type="button" id="send-button" aria-label="보내기" disabled>↑</button>
+                  </div>
+
+                  <div class="chat-error" aria-live="polite">
+                    <div class="title">지금은 팀과 연결할 수 없어요</div>
+                    <div class="message" id="error-message"></div>
+                    <button class="retry-button" type="button" id="retry-button">다시 시도</button>
+                  </div>
+
+                  <div class="chat-note">AI는 실수할 수 있어요. 중요한 내용은 확인하세요.</div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+
+        <div class="logo-strip" aria-label="도구 목록">
+          <div class="logo-strip-inner">
+            <span>Microsoft Copilot Studio</span>
+            <span>Claude Opus 5.5</span>
+            <span>PowerPoint</span>
+            <span>Word</span>
+            <span>Excel</span>
+            <span>HTML</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-strip" aria-label="다양한 결과 지표">
+        <div class="stat-item" data-reveal>
+          <span class="num" data-target="1">0</span>
+          <span class="label">요청</span>
+        </div>
+        <div class="stat-item" data-reveal>
+          <span class="num" data-target="6">0</span>
+          <span class="label">에이전트</span>
+        </div>
+        <div class="stat-item" data-reveal>
+          <span class="num" data-target="7">0</span>
+          <span class="label">매뉴얼</span>
+        </div>
+        <div class="stat-item" data-reveal>
+          <span class="num" data-target="5">0</span>
+          <span class="label">파일</span>
+        </div>
+      </section>
+
+      <section class="feature-section" id="features">
+        <div class="section-header" data-reveal>
+          <p class="eyebrow">Five deliverables.</p>
+          <h2 class="section-title">한 번의 요청으로 받는 다섯 가지</h2>
+        </div>
+
+        <div class="feature-grid" data-reveal>
+          <article class="feature-card">
+            <div class="feature-top">
+              <span class="feature-kicker">presentation</span>
+              <span class="feature-badge">10장 내외</span>
+            </div>
+            <div class="feature-visual">
+              <div class="mock-slides">
+                <div class="mock-slide">
+                  <div class="slide-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="mock-slide">
+                  <div class="slide-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+                <div class="mock-slide">
+                  <div class="slide-lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="feature-copy">
+              <h3 class="feature-title">발표 자료</h3>
+              <p class="feature-text">말할 거리가 정리된 10장 내외 슬라이드와 발표자 노트까지.</p>
+              <span class="feature-file">presentation.pptx</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-top">
+              <span class="feature-kicker">poster</span>
+              <span class="feature-badge">Print-ready</span>
+            </div>
+            <div class="feature-visual">
+              <div class="mock-poster">
+                <span class="poster-tag">CAMPAIGN</span>
+                <div class="poster-title">스쿨<br>캠페인</div>
+              </div>
+            </div>
+            <div class="feature-copy">
+              <h3 class="feature-title">포스터</h3>
+              <p class="feature-text">브라우저에서 바로 여는 유리 질감 포스터, 인쇄·PDF 저장도 가능합니다.</p>
+              <span class="feature-file">poster.html</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-top">
+              <span class="feature-kicker">proposal</span>
+              <span class="feature-badge">readable</span>
+            </div>
+            <div class="feature-visual">
+              <div class="mock-proposal">
+                <div class="topbar-fill"></div>
+                <div class="content">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+            <div class="feature-copy">
+              <h3 class="feature-title">제안서</h3>
+              <p class="feature-text">테마 색 표지와 가독성 높은 흰 본문으로 바로 공유할 수 있어요.</p>
+              <span class="feature-file">proposal.docx</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-top">
+              <span class="feature-kicker">webpage</span>
+              <span class="feature-badge">landing</span>
+            </div>
+            <div class="feature-visual">
+              <div class="mock-webpage">
+                <div class="browser-bar">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="browser-body">
+                  <div class="hero-block"></div>
+                  <div class="row">
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <div class="card"></div>
+                </div>
+              </div>
+            </div>
+            <div class="feature-copy">
+              <h3 class="feature-title">웹페이지</h3>
+              <p class="feature-text">유리 메뉴 바와 카드로 만든 소개·신청 페이지를 바로 써 드려요.</p>
+              <span class="feature-file">webpage.html</span>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-top">
+              <span class="feature-kicker">budget</span>
+              <span class="feature-badge">₩12.4M</span>
+            </div>
+            <div class="feature-visual">
+              <div class="mock-budget">
+                <div class="amount">₩12,400,000</div>
+                <div class="bar-group">
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                </div>
+              </div>
+            </div>
+            <div class="feature-copy">
+              <h3 class="feature-title">예산 분석</h3>
+              <p class="feature-text">숫자 카드와 차트로 합계·비용 항목을 깔끔하게 정리해 드려요.</p>
+              <span class="feature-file">budget_analysis.xlsx</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-section" id="how">
+        <div class="section-header" data-reveal>
+          <p class="eyebrow">How the team works.</p>
+          <h2 class="section-title">팀장 하나, 전문가 다섯, 매뉴얼 일곱.</h2>
+        </div>
+
+        <div class="workflow" data-reveal>
+          <div class="orbit-panel">
+            <div class="orbit" aria-label="에이전트 작업 구조">
+              <div class="orbit-ring"></div>
+              <span class="agent" style="--a:0deg"><b>ppt-agent</b></span>
+              <span class="agent" style="--a:72deg"><b>poster-agent</b></span>
+              <span class="agent" style="--a:144deg"><b>proposal-agent</b></span>
+              <span class="agent" style="--a:216deg"><b>webpage-agent</b></span>
+              <span class="agent" style="--a:288deg"><b>budget-agent</b></span>
+              <div class="leader">팀장</div>
+            </div>
+          </div>
+
+          <div class="steps-panel">
+            <div class="step-item">
+              <div class="step-number">①</div>
+              <div class="step-copy">
+                <strong>브리프</strong>
+                <span>요청을 한 장짜리 기획서로 정리하고 컬러 테마를 정해요.</span>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">②</div>
+              <div class="step-copy">
+                <strong>예산 먼저</strong>
+                <span>budget-agent가 예산 기준표로 모든 금액의 기준을 잡아요.</span>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">③</div>
+              <div class="step-copy">
+                <strong>원고</strong>
+                <span>전문가들이 같은 브리프로 각자 원고를 써요.</span>
+              </div>
+            </div>
+
+            <div class="step-item">
+              <div class="step-number">④</div>
+              <div class="step-copy">
+                <strong>파일 5개</strong>
+                <span>디자인 규칙에 맞춰 파일을 만들어 한 번에 첨부해요.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="design-section" id="design">
+        <div class="design-band" data-reveal>
+          <div class="design-inner">
+            <p class="eyebrow">One design language.</p>
+            <h2 class="section-title">다섯 파일, 하나의 리퀴드 글래스.</h2>
+            <p class="sub">재질과 레이아웃은 늘 같고, 색만 주제에 맞게 바뀝니다.</p>
+          </div>
+
+          <div class="palette-grid">
+            <div class="palette-card">
+              <div class="swatches">
+                <span class="swatch" style="background:#A8D8FF"></span>
+                <span class="swatch" style="background:#007AFF"></span>
+              </div>
+              <div class="palette-name">스카이</div>
+              <div class="palette-use">교육·일반 행사</div>
+            </div>
+
+            <div class="palette-card">
+              <div class="swatches">
+                <span class="swatch" style="background:#1EC8FF"></span>
+                <span class="swatch" style="background:#FF2E93"></span>
+              </div>
+              <div class="palette-name">팝</div>
+              <div class="palette-use">IT 캠페인·축제</div>
+            </div>
+
+            <div class="palette-card">
+              <div class="swatches">
+                <span class="swatch" style="background:#0B1628"></span>
+                <span class="swatch" style="background:#6EA8FF"></span>
+              </div>
+              <div class="palette-name">네이비</div>
+              <div class="palette-use">공공 보고서·정책</div>
+            </div>
+
+            <div class="palette-card">
+              <div class="swatches">
+                <span class="swatch" style="background:#A8E3C4"></span>
+                <span class="swatch" style="background:#12A150"></span>
+              </div>
+              <div class="palette-name">그린</div>
+              <div class="palette-use">환경·ESG</div>
+            </div>
+
+            <div class="palette-card">
+              <div class="swatches">
+                <span class="swatch" style="background:#FFC2B3"></span>
+                <span class="swatch" style="background:#FF6B4A"></span>
+              </div>
+              <div class="palette-name">코럴</div>
+              <div class="palette-use">가족·복지</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="prompt-section" id="prompt">
+        <div class="section-header" data-reveal>
+          <p class="eyebrow">Ready prompts.</p>
+          <h2 class="section-title">이런 요청에 강해요</h2>
+        </div>
+
+        <div class="marquee-wrap" data-reveal>
+          <div class="marquee">
+            <button class="chip" type="button" data-prompt="가을 학교 축제 기획해 줘">가을 학교 축제</button>
+            <button class="chip" type="button" data-prompt="탄소중립 캠페인 홍보물 만들어 줘">탄소중립 캠페인</button>
+            <button class="chip" type="button" data-prompt="교사 AI 연수 프로그램 제안해 줘">교사 AI 연수</button>
+            <button class="chip" type="button" data-prompt="신제품 런칭 행사 기획해 줘">신제품 런칭 행사</button>
+            <button class="chip" type="button" data-prompt="진로 체험 주간 홍보해 줘">진로 체험 주간</button>
+            <button class="chip" type="button" data-prompt="지역 축제 홍보 포스터 만들어 줘">지역 축제 홍보</button>
+            <button class="chip" type="button" data-prompt="고객 제안 워크숍 계획해 줘">고객 제안 워크숍</button>
+            <button class="chip" type="button" data-prompt="학부모 설명회 자료를 만들어 줘">학부모 설명회</button>
+            <button class="chip" type="button" data-prompt="해커톤 홍보 자료 기획해 줘">해커톤</button>
+            <button class="chip" type="button" data-prompt="동아리 박람회 홍보물 만들어 줘">동아리 박람회</button>
+            <button class="chip" type="button" data-prompt="가을 학교 축제 기획해 줘">가을 학교 축제</button>
+            <button class="chip" type="button" data-prompt="탄소중립 캠페인 홍보물 만들어 줘">탄소중립 캠페인</button>
+            <button class="chip" type="button" data-prompt="교사 AI 연수 프로그램 제안해 줘">교사 AI 연수</button>
+            <button class="chip" type="button" data-prompt="신제품 런칭 행사 기획해 줘">신제품 런칭 행사</button>
+            <button class="chip" type="button" data-prompt="진로 체험 주간 홍보해 줘">진로 체험 주간</button>
+            <button class="chip" type="button" data-prompt="지역 축제 홍보 포스터 만들어 줘">지역 축제 홍보</button>
+            <button class="chip" type="button" data-prompt="고객 제안 워크숍 계획해 줘">고객 제안 워크숍</button>
+            <button class="chip" type="button" data-prompt="학부모 설명회 자료를 만들어 줘">학부모 설명회</button>
+            <button class="chip" type="button" data-prompt="해커톤 홍보 자료 기획해 줘">해커톤</button>
+            <button class="chip" type="button" data-prompt="동아리 박람회 홍보물 만들어 줘">동아리 박람회</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-wrap">
+        <div class="cta-panel mesh" data-reveal>
+          <div class="cta-inner">
+            <p class="eyebrow">Your turn.</p>
+            <h2 class="cta-title">지금, 아이디어 한 줄을<br>적어 보세요.</h2>
+            <button class="cta-button" type="button" data-scroll-chat>대화 시작하기 ↑</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="footer-mark">AI Creative Agent Team</span>
+      <span>· Copilot Studio로 만든 멀티 에이전트</span>
+      <span>· © 2026</span>
+    </footer>
+
+    <button class="floating-pill hidden" id="floating-pill" type="button" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span class="floating-text">팀이 작업 중 · 0:42</span>
+    </button>
+  </div>
+
   <script>
+    // 1) 등장 효과, 숫자 증가, 버튼 동작
+    const revealEls = document.querySelectorAll("[data-reveal]");
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    revealEls.forEach((el) => {
+      observer.observe(el);
+    });
+
+    function watchNumber(item) {
+      const target = Number(item.getAttribute("data-target") || "0");
+      const duration = 950;
+      const start = performance.now();
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(target * eased);
+        item.textContent = value;
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        } else {
+          item.textContent = target;
+        }
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    const statNodes = document.querySelectorAll("[data-target]");
+    statNodes.forEach((node) => watchNumber(node));
+
+    function scrollToChat() {
+      const card = document.querySelector(".chat-card");
+      if (!card) return;
+      window.scrollTo({
+        top: card.getBoundingClientRect().top + window.scrollY - 88,
+        behavior: "smooth"
+      });
+      const composerTextarea = document.getElementById("chat-input");
+      if (composerTextarea) {
+        requestAnimationFrame(() => {
+          composerTextarea.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    document.querySelectorAll("[data-scroll-chat]").forEach((button) => {
+      button.addEventListener("click", scrollToChat);
+    });
+
+    const composerTextarea = document.getElementById("chat-input");
+    const sendButton = document.getElementById("send-button");
+    const floatingPill = document.getElementById("floating-pill");
+    const floatingText = floatingPill.querySelector(".floating-text");
+    const workingText = document.querySelector(".working-text");
+    const errorBox = document.getElementById("error-message");
+
+    function setWorkingText(text) {
+      if (workingText) {
+        workingText.textContent = text;
+      }
+      if (floatingText) {
+        floatingText.textContent = text;
+      }
+    }
+
+    let workingTimerStart = Date.now();
+    let workingTimerId = null;
+
+    function startWorkingTimer() {
+      clearInterval(workingTimerId);
+      workingTimerStart = Date.now();
+
+      function updateTimer() {
+        const elapsed = Math.max(0, Math.floor((Date.now() - workingTimerStart) / 1000));
+        const mins = Math.floor(elapsed / 60);
+        const secs = String(elapsed % 60).padStart(2, "0");
+        const timerText = `팀이 작업 중 · ${mins}:${secs}`;
+
+        if (document.body.classList.contains("is-working")) {
+          setWorkingText(timerText);
+          if (elapsed >= 20) {
+            setWorkingText("파일 5개를 만드느라 몇 분 걸릴 수 있어요");
+          }
+        }
+      }
+
+      updateTimer();
+      workingTimerId = setInterval(updateTimer, 1000);
+    }
+
+    function stopWorkingTimer() {
+      clearInterval(workingTimerId);
+      workingTimerId = null;
+    }
+
+    function setConnectedState(isConnected) {
+      document.body.classList.toggle("is-connected", isConnected);
+      const sendEnabled = isConnected && !document.body.classList.contains("is-error");
+      sendButton.disabled = !sendEnabled;
+      composerTextarea.disabled = !isConnected;
+      composerTextarea.placeholder = isConnected ? "무엇을 만들어 볼까요?" : "팀을 부르는 중…";
+    }
+
+    document.querySelectorAll("[data-prompt]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const prompt = button.getAttribute("data-prompt");
+        if (!prompt) return;
+        document.body.classList.add("is-started");
+        composerTextarea.value = prompt;
+        composerTextarea.focus({ preventScroll: true });
+        scrollToChat();
+        composerTextarea.style.height = "auto";
+        composerTextarea.style.height = Math.min(composerTextarea.scrollHeight, 124) + "px";
+      });
+    });
+
+    function autoResizeTextarea() {
+      const textarea = composerTextarea;
+      if (!textarea) return;
+      textarea.style.height = "auto";
+      textarea.style.height = Math.min(textarea.scrollHeight, 124) + "px";
+    }
+
+    composerTextarea.addEventListener("input", autoResizeTextarea);
+
+    composerTextarea.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey && !event.isComposing && event.keyCode !== 229) {
+        event.preventDefault();
+        if (!sendButton.disabled) {
+          sendMessage();
+        }
+      }
+    });
+
+    function sendMessage() {
+      const value = composerTextarea.value.trim();
+      if (!value || sendButton.disabled) return;
+
+      document.body.classList.add("is-started");
+      document.body.classList.add("is-working");
+      floatingPill.classList.remove("hidden");
+      setWorkingText("팀이 작업 중 · 0:42");
+      startWorkingTimer();
+
+      if (window.__chatStore && typeof window.__chatStore.dispatch === "function") {
+        window.__chatStore.dispatch({
+          type: "WEB_CHAT/SEND_MESSAGE",
+          payload: { text: value }
+        });
+      }
+
+      composerTextarea.value = "";
+      composerTextarea.style.height = "auto";
+      setTimeout(() => {
+        composerTextarea.focus({ preventScroll: true });
+      }, 0);
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+
+    document.getElementById("retry-button").addEventListener("click", () => {
+      document.body.classList.remove("is-error");
+      connect();
+    });
+
+    document.querySelector(".new-chat-btn").addEventListener("click", () => {
+      document.body.classList.remove("is-working");
+      document.body.classList.remove("is-started");
+      document.body.classList.remove("is-error");
+      composerTextarea.value = "";
+      composerTextarea.style.height = "auto";
+      if (window.__chatStore && typeof window.__chatStore.dispatch === "function") {
+        window.__chatStore.dispatch({
+          type: "WEB_CHAT/SEND_MESSAGE",
+          payload: { text: "" }
+        });
+      }
+      setConnectedState(true);
+      floatingPill.classList.add("hidden");
+      stopWorkingTimer();
+      setWorkingText("팀이 작업 중 · 0:42");
+    });
+
+    floatingPill.addEventListener("click", scrollToChat);
+
+    // 2) 대화창 동작과 연결
     const BROKER_URL = "https://dl-broker-juwon-4jt3z.azurewebsites.net/api/directlineToken";
     const SEALED = "m-RmgSfZDwHuihnor2qkbqPxx3Glj-niqqubXETv_Ac1JKJWH07Nq0t7q5CzQ4F4JM2BOzzqIpS45OcDrmrjzsZiIk0hmf-47SOJMks-bZ8aQ91JV3igMw_ijtcCBfqfvoLfG3vr8oIiY3Ulletb_fWAUA4bNtRhxP6zRM8Spew3i9UHHv3VIM418vOoq32HdFpMpT0Ndf1t-8KLNiN3K-DoSBZFhdnfASu3SaP9k40v3XH5nRiWGvkge1v_1ioU9Upv076ztQswA7n7NXYb4BE69xrp9wleW09n0__fqNU3KlZkylahASL77YigLCQEtUKj5omsWfNOKu4BKz-J049DAETMui3CVo5UU5Mv4LArXygjFrQMFpmB__tla2Kwq3T3hxPmFV6KQ9VA9vaG06R41aRDIPIzJcrH4xsX62gG2yJjJNu2r9Xh7oA4m6xkubWK47GosyxxszSWbLIktbIk_dWYS80eK7OA-7es-KVRpEUrj_uJZLmAEP8bUs98unkX_3MmvQ91nHjlqIfgorKz7QaEjb14yuBdn1u6oU6VZLYcKH7HGYtvhYygZWcIPPZURpGTAH6hBRYo-32KgqMWCc1-z4S3yK_J55cIVuDUDBFWVgtJ5BRHZmK7IJfyyXxcBGpLKNKZymVtqWw";
-    const status = document.getElementById("status");
+
+    let directLine = null;
 
     function showError(message) {
-      status.hidden = false;
-      status.textContent = message;
+      document.body.classList.add("is-error");
+      if (errorBox) {
+        errorBox.textContent = message;
+      }
+      if (composerTextarea) {
+        composerTextarea.disabled = true;
+      }
+      sendButton.disabled = true;
     }
 
     async function connect() {
@@ -38,6 +2397,7 @@
         showError("서버에 연결하지 못했습니다. 네트워크와 배포 주소를 확인해 주세요.");
         return;
       }
+
       if (!response.ok) {
         showError("서버가 연결 요청을 처리하지 못했습니다 (HTTP " + response.status + ").");
         return;
@@ -50,25 +2410,75 @@
         showError("서버 응답을 읽을 수 없습니다. 잠시 후 다시 시도해 주세요.");
         return;
       }
+
       if (!data || typeof data.token !== "string" || !data.token.trim()) {
         showError("서버에서 연결 토큰을 받지 못했습니다. 암호와 배포 주소를 확인해 주세요.");
         return;
       }
 
       try {
-        const directLine = WebChat.createDirectLine({ token: data.token });
-        status.hidden = true;
-        directLine.postActivity({
-          type: "event", name: "startConversation", from: { id: "user" }
-        }).subscribe({
-          error: () => showError("첫 인사를 요청하지 못했습니다. 채팅창에 메시지를 입력해 주세요.")
+        directLine = WebChat.createDirectLine({ token: data.token });
+
+        const styleOptions = {
+          hideSendBox: true,
+          rootHeight: "100%",
+          backgroundColor: "transparent",
+          primaryFont: "'Pretendard Variable', -apple-system, sans-serif",
+          bubbleBackground: "transparent",
+          bubbleBorderWidth: 0,
+          bubbleMaxWidth: 720,
+          bubbleMinWidth: 0,
+          bubbleFromUserBackground: "linear-gradient(135deg, #EEF0FF, #FBEFFF)",
+          bubbleFromUserBorderWidth: 0,
+          bubbleFromUserBorderRadius: 20
+        };
+
+        const store = WebChat.createStore({}, ({ dispatch }) => next => action => {
+          if (action.type === "DIRECT_LINE/CONNECT_FULFILLED") {
+            document.body.classList.add("is-connected");
+            setConnectedState(true);
+          }
+
+          if (action.type === "DIRECT_LINE/INCOMING_ACTIVITY") {
+            const activity = action.payload && action.payload.activity;
+            if (activity && activity.from && activity.from.role !== "user" && activity.type === "message") {
+              document.body.classList.remove("is-working");
+              floatingPill.classList.remove("hidden");
+              floatingText.textContent = "결과가 도착했어요 ↑";
+              stopWorkingTimer();
+            }
+          }
+
+          return next(action);
         });
-        WebChat.renderWebChat({ directLine, locale: "ko-KR" }, document.getElementById("webchat"));
+
+        window.__chatStore = store;
+
+        directLine.postActivity({
+          type: "event",
+          name: "startConversation",
+          from: { id: "user" }
+        }).subscribe({
+          error: () => {
+            showError("첫 인사를 요청하지 못했습니다. 채팅창에 메시지를 입력해 주세요.");
+          }
+        });
+
+        WebChat.renderWebChat({
+          directLine,
+          store,
+          locale: "ko-KR",
+          styleOptions
+        }, document.getElementById("webchat"));
+
+        setConnectedState(true);
       } catch {
         showError("채팅을 시작하지 못했습니다. 새로고침 후 다시 시도해 주세요.");
       }
     }
 
+    setConnectedState(false);
+    floatingPill.classList.add("hidden");
     connect();
   </script>
 </body>
